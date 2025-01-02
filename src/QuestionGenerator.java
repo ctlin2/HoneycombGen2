@@ -11,24 +11,24 @@ import java.util.StringTokenizer;
 class QuestionGenerator {
 	public FCCModel m_FccModel;
 	private int m_Level = 1;
-	final static int m_GivenNumber = 2; //¨Æ¥ı­­©wªº¼Æ¦r­Ó¼Æ
-	final static int m_MaxFirst = 8; //¨Æ¥ı­­©wªº³Ì¤p¼Æ¦r¤W­­
-	private boolean[][] m_Adj; // ¾F±µ¯x°}
-	private byte[][] m_Dist; //¶ZÂ÷¯x°}
-	private DfsNode[] m_DfsNodes; // ¸`ÂIª¬ºA
-	private byte[][] m_Table; // ±ÛÂà¹ï·Óªí
-	private Stack<DfsNode> m_Stack; // °ïÅ|
+	final static int m_GivenNumber = 2; //äº‹å…ˆé™å®šçš„æ•¸å­—å€‹æ•¸
+	final static int m_MaxFirst = 8; //äº‹å…ˆé™å®šçš„æœ€å°æ•¸å­—ä¸Šé™
+	private boolean[][] m_Adj; // é„°æ¥çŸ©é™£
+	private byte[][] m_Dist; //è·é›¢çŸ©é™£
+	private DfsNode[] m_DfsNodes; // ç¯€é»ç‹€æ…‹
+	private byte[][] m_Table; // æ—‹è½‰å°ç…§è¡¨
+	private Stack<DfsNode> m_Stack; // å †ç–Š
 	
-	private byte[][] m_Candidates = new byte[15236944][]; // °O¿ı¿z¿ï«áªº¥i¯à¸ô®|
-	private int m_Count = 0; // °O¿ı¿z¿ï«áªº¥i¯à¸ô®|¼Æ
+	private byte[][] m_Candidates = new byte[15236944][]; // è¨˜éŒ„ç¯©é¸å¾Œçš„å¯èƒ½è·¯å¾‘
+	private int m_Count = 0; // è¨˜éŒ„ç¯©é¸å¾Œçš„å¯èƒ½è·¯å¾‘æ•¸
 	
 	private Stack<Constraint> m_ConsStack = new Stack<Constraint>();
-	private ArrayList<QA> m_QA = new ArrayList<QA>(); // °O¿ıÃD¥Ø»P¸Ñµª
+	private ArrayList<QA> m_QA = new ArrayList<QA>(); // è¨˜éŒ„é¡Œç›®èˆ‡è§£ç­”
 	
 	private static BufferedReader m_Reader;
 	private static PrintWriter m_Writer;
 	
-	// «Øºc¤l
+	// å»ºæ§‹å­
 	QuestionGenerator() {
 		try {
 			m_Writer = new PrintWriter("qa.txt");
@@ -50,7 +50,7 @@ class QuestionGenerator {
 		
 		m_Dist = createDistances();
 
-		// ¬°¨C­Ó¸`ÂI«Ø¥ßª¬ºA
+		// ç‚ºæ¯å€‹ç¯€é»å»ºç«‹ç‹€æ…‹
 		m_DfsNodes = createDfsNodes();
 		m_Stack = new Stack<DfsNode>();
 		
@@ -75,7 +75,7 @@ class QuestionGenerator {
 				continue;
 			}
 			
-			if (genPaths(b) > 0){ // §ä¨ì¤@¨Ç§k¦Xªº­Ô¿ï¸ô®|
+			if (genPaths(b) > 0){ // æ‰¾åˆ°ä¸€äº›å»åˆçš„å€™é¸è·¯å¾‘
 				// DEBUG: validate
 				for (int i = 0; i < m_Count; i++){
 					for (int p = 0; p < b.length; p++){
@@ -85,14 +85,14 @@ class QuestionGenerator {
 							try {
 								System.in.read();
 							} catch (IOException e) {
-								// TODO ¦Û°Ê²£¥Íªº catch °Ï¶ô
+								// TODO è‡ªå‹•ç”¢ç”Ÿçš„ catch å€å¡Š
 								e.printStackTrace();
 							}
 						}
 					}
 				}
 				
-				// ¼W¥[­­©w±ø¥ó¡A¿z¿ï¦Ü°ß¤@±ø¸ô®|
+				// å¢åŠ é™å®šæ¢ä»¶ï¼Œç¯©é¸è‡³å”¯ä¸€æ¢è·¯å¾‘
 				ScreenPaths(b, m_Count);
 				m_Writer.flush();
 				
@@ -287,7 +287,7 @@ class QuestionGenerator {
 	}
 	
 	private int genPaths(byte[] q){
-		// ®Ú¾ÚÃD¥Ø q «Ø¥ß¤@­Ó¸¹½X¹ï¦ì¸mªº¹ïÀ³ªí qT
+		// æ ¹æ“šé¡Œç›® q å»ºç«‹ä¸€å€‹è™Ÿç¢¼å°ä½ç½®çš„å°æ‡‰è¡¨ qT
 		final byte[] qT = new byte[q.length + 1]; 
 		for (byte i = 0; i < qT.length; i++){
 			qT[i] = -1;
@@ -417,7 +417,7 @@ class QuestionGenerator {
 		return a;
 	}
 	
-	//²£¥Í±ÛÂà¹ï·Óªí
+	//ç”¢ç”Ÿæ—‹è½‰å°ç…§è¡¨
 	private byte[][] createRotationTable(int level){
 		byte[][] table = null;
 		switch(level){
@@ -497,15 +497,15 @@ class QuestionGenerator {
 		return table;
 	}
 	
-	//²Ä4ª©
+	//ç¬¬4ç‰ˆ
 	public int DFS(byte start, byte[] qT) {
-		// ÀË¬d¶ZÂ÷¡A¦]¬°¦bstartªº¼Æ¦r¬O1¡A­Ystart ¨ì µ¹©w ³Ì¤p¼Æ¦r¦ì¸m¡A¶ZÂ÷¶W¹L¼Æ¦r®t¡A«h¤£¥i¯à¹F¨ì
+		// æª¢æŸ¥è·é›¢ï¼Œå› ç‚ºåœ¨startçš„æ•¸å­—æ˜¯1ï¼Œè‹¥start åˆ° çµ¦å®š æœ€å°æ•¸å­—ä½ç½®ï¼Œè·é›¢è¶…éæ•¸å­—å·®ï¼Œå‰‡ä¸å¯èƒ½é”åˆ°
 		int i = 0;
 		while (qT[i] == -1) i++;
 		if ((m_Dist[start][qT[i]]) > i - 1 )
 			return 0;
 		
-		// ¥Î DFS §ä¥X¥Ñ½s¸¹ start¸`ÂI ¥Xµo¡A¥B§k¦XÃD¥Ø q ªº§¹¥ş¸ô®|
+		// ç”¨ DFS æ‰¾å‡ºç”±ç·¨è™Ÿ startç¯€é» å‡ºç™¼ï¼Œä¸”å»åˆé¡Œç›® q çš„å®Œå…¨è·¯å¾‘
 		m_DfsNodes[start].hop = 1;
 		m_DfsNodes[start].nn = 0;
 		m_DfsNodes[start].visited = true;
@@ -516,15 +516,15 @@ class QuestionGenerator {
 	
 	private int search(byte[] qT) {
 		int m = m_FccModel.getNodes().size();
-		int count = 0; // µo²{¨ìªº¸ô®|¼Æ
+		int count = 0; // ç™¼ç¾åˆ°çš„è·¯å¾‘æ•¸
 		
 		while (!m_Stack.isEmpty()) {
 			DfsNode a = m_Stack.peek();
 			byte pos = qT[a.hop];
-			if (pos != -1){ // ÃD¥Ø¦³«ü©w¦¹¼Æ¦rªº¦ì¸m
-				//¤ñ¸û¦ì¸m¬O§_§k¦X
+			if (pos != -1){ // é¡Œç›®æœ‰æŒ‡å®šæ­¤æ•¸å­—çš„ä½ç½®
+				//æ¯”è¼ƒä½ç½®æ˜¯å¦å»åˆ
 				if (a.id != pos){
-					//¤£§k¦X¡A¤£¥Î¦A¤ñ¤F¡A¦^°h
+					//ä¸å»åˆï¼Œä¸ç”¨å†æ¯”äº†ï¼Œå›é€€
 					a = m_Stack.pop();
 					a.reset();
 					continue;
@@ -532,49 +532,49 @@ class QuestionGenerator {
 			}
 			
 			if (a.hop >= m) {
-				// §ä¨ì¤@±ø§¹¥ş¸ô®|(¥B²Å¦X±ø¥ó), °O¤JÃD®w
+				// æ‰¾åˆ°ä¸€æ¢å®Œå…¨è·¯å¾‘(ä¸”ç¬¦åˆæ¢ä»¶), è¨˜å…¥é¡Œåº«
 				try {
 					count++;
 					m_Candidates[m_Count++] = getPath((byte)m, a);
-					a = m_Stack.pop(); // ¦^°h
+					a = m_Stack.pop(); // å›é€€
 					a.reset();
 				}
 				catch (ArrayIndexOutOfBoundsException ex){
-					//¶W¥X°}¦C®e¶q¡A©ñ±ó
-					// ²M°£°ïÅ|¡A¨ÃÁÙ­ì©Ò¦³¸`ÂIª¬ºA
+					//è¶…å‡ºé™£åˆ—å®¹é‡ï¼Œæ”¾æ£„
+					// æ¸…é™¤å †ç–Šï¼Œä¸¦é‚„åŸæ‰€æœ‰ç¯€é»ç‹€æ…‹
 					while (!m_Stack.isEmpty()){
 						a = m_Stack.pop();
 						a.reset();
 					}
 					
-					System.out.println("¶W¥X°}¦C®e¶q");
+					System.out.println("è¶…å‡ºé™£åˆ—å®¹é‡");
 					return 0; 
 				}
 			} else {
-				// §ä¤U¤@­Ó¥i¥H«e¶iªº¥¼«ô³X¾F©~
+				// æ‰¾ä¸‹ä¸€å€‹å¯ä»¥å‰é€²çš„æœªæ‹œè¨ªé„°å±…
 				while (a.nn < m && (!m_Adj[a.id][a.nn] || m_DfsNodes[a.nn].visited))
 					a.nn++;
 
-				if (a.nn < m) { // ¦³¤U¤@­Ó¥i«ô³X¾F©~ªº¾F©~ b
+				if (a.nn < m) { // æœ‰ä¸‹ä¸€å€‹å¯æ‹œè¨ªé„°å±…çš„é„°å±… b
 					DfsNode b = m_DfsNodes[a.nn];
-					a.nn++; // §ó·s¤U¦¸·Ç³Æ«ô³Xªº¸`ÂI½s¸¹
+					a.nn++; // æ›´æ–°ä¸‹æ¬¡æº–å‚™æ‹œè¨ªçš„ç¯€é»ç·¨è™Ÿ
 					b.pn = a.id;
 					b.hop = a.hop + 1;
 					b.nn = 0;
 					b.visited = true; //
 					m_Stack.push(b);
-				} else { // ¤wµL¥i«ô³Xªº¾F©~
-					a = m_Stack.pop(); // ¦^°h
-					a.reset(); // ª¬ºAÁÙ­ì
+				} else { // å·²ç„¡å¯æ‹œè¨ªçš„é„°å±…
+					a = m_Stack.pop(); // å›é€€
+					a.reset(); // ç‹€æ…‹é‚„åŸ
 				}
 			}
 		}
-		return count; // ¦^¶Ç§ä¨ìªº¸ô®|¼Æ
+		return count; // å›å‚³æ‰¾åˆ°çš„è·¯å¾‘æ•¸
 	}
 	
 	private byte[] getPath(byte n, DfsNode a) {
-		// ¨Ì«e¤@­Ó¸`ÂI¡A°lÂÜ¾ã±ø¸ô®|
-		byte[] answer = new byte[n]; // °O¿ı¨C­Ó¸`ÂIªº¦b¸ô®|¤¤ªº¶¶¦ì
+		// ä¾å‰ä¸€å€‹ç¯€é»ï¼Œè¿½è¹¤æ•´æ¢è·¯å¾‘
+		byte[] answer = new byte[n]; // è¨˜éŒ„æ¯å€‹ç¯€é»çš„åœ¨è·¯å¾‘ä¸­çš„é †ä½
 		DfsNode tempNode = a;
 		answer[tempNode.id] = n--;
 		// System.out.print(permute[tempNode.id] + " "); // DEBUG
@@ -589,7 +589,7 @@ class QuestionGenerator {
 		return answer;
 	}
 	
-	// ®Ú¾Ú fixed±ø¥ó¡A¿z¿ï¸ô®|¡A¨Ã¬D¿ï·sªº¼Æ¦rn»P¦ì¸mp¡A¨Ï³Ñ¾l¼Æ®|¼Æ³Ì¤Ö
+	// æ ¹æ“š fixedæ¢ä»¶ï¼Œç¯©é¸è·¯å¾‘ï¼Œä¸¦æŒ‘é¸æ–°çš„æ•¸å­—nèˆ‡ä½ç½®pï¼Œä½¿å‰©é¤˜æ•¸å¾‘æ•¸æœ€å°‘
 	private void ScreenPaths(byte[] fixed, int count){
 		
 		m_ConsStack.push(new Constraint(fixed, count));
@@ -653,7 +653,7 @@ class QuestionGenerator {
 					if (count != 0){
 						if (count < minCount){
 							minCount = count;
-							min_np.clear(); // todo: «O¯d¤@¨Ç³Ì¤Öªº  by TreeSet
+							min_np.clear(); // todo: ä¿ç•™ä¸€äº›æœ€å°‘çš„  by TreeSet
 							min_np.add(new NP(n, p));
 						}
 						else if (count == minCount){
@@ -665,18 +665,18 @@ class QuestionGenerator {
 			}
 			
 			if (minCount > 0) {
-				// ¦hºØn»Pp¨Ï¸ô®|³Ñ¾l¼Æ¤Ö¡A«h
+				// å¤šç¨®nèˆ‡pä½¿è·¯å¾‘å‰©é¤˜æ•¸å°‘ï¼Œå‰‡
 				int index = 0;
 				for (NP np : min_np){
 					if (index > 1  && index < min_np.size() - 2){
-						//ÀH¾÷©ñ±ó¤@¨Ç
+						//éš¨æ©Ÿæ”¾æ£„ä¸€äº›
 						double x = Math.random();
 						if (x > (10.0 - 4)/min_np.size())
 							continue;
 					}
 					byte[] a = Arrays.copyOf(fixed, fixed.length);
-					a[np.p] = np.n; //¼W¥[­­¨î
-					m_ConsStack.push(new Constraint(a, minCount) ); //¦C¤J¿z¿ï
+					a[np.p] = np.n; //å¢åŠ é™åˆ¶
+					m_ConsStack.push(new Constraint(a, minCount) ); //åˆ—å…¥ç¯©é¸
 					index++;
 				}
 			}
@@ -742,7 +742,7 @@ class QuestionGenerator {
 	private int fix(int p, byte n, byte[] fixed){
 		int count = 0;
 		for (int e = 0; e < m_Count; e++){
-			// ÀË¬d¬O§_§k¦X fixed ±ø¥ó
+			// æª¢æŸ¥æ˜¯å¦å»åˆ fixed æ¢ä»¶
 			boolean matched = true;
 			for (int i = 0; i < fixed.length; i++){
 				if (fixed[i] != 0 && m_Candidates[e][i] != fixed[i]){
@@ -752,7 +752,7 @@ class QuestionGenerator {
 			}
 			if (!matched) continue;
 			
-			if (m_Candidates[e][p] == (byte)n){ // §k¦X
+			if (m_Candidates[e][p] == (byte)n){ // å»åˆ
 				count++;
 			}	
 		}
@@ -818,7 +818,7 @@ class QA {
 	byte[] q;
 	byte[] a;
 
-	//«Øºc¤l
+	//å»ºæ§‹å­
 	QA(byte[] q, byte[] a){
 		this.q = q;
 		this.a = a;

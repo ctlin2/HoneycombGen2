@@ -1,12 +1,12 @@
 
 class DfsNode {
-	byte id; //¸`ÂI½s¸¹
-	boolean visited = false; //¤w«ô³X
-	byte nn = -1; //¤U¤@¸`ÂI
-	byte pn = -1; //«e¤@¸`ÂI
-	int hop = -1; //¸õ¼Æ
+	byte id; //ç¯€é»ç·¨è™Ÿ
+	boolean visited = false; //å·²æ‹œè¨ª
+	byte nn = -1; //ä¸‹ä¸€ç¯€é»
+	byte pn = -1; //å‰ä¸€ç¯€é»
+	int hop = -1; //è·³æ•¸
 	
-	//«Øºc¤l
+	//å»ºæ§‹å­
 	DfsNode(byte id){
 		this.id = id;
 	}

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class FCCModel {
 	private ArrayList<FCCNode> m_Nodes;
 	
-	//�غc�l
+	//建構子
 	FCCModel(){
 		m_Nodes = new ArrayList<FCCNode>();
 	}
